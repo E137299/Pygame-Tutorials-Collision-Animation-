@@ -26,8 +26,7 @@ class Background(pygame.sprite.Sprite):
 		self.y = y
 		self.speed = speed
 		self.image = pygame.image.load(image_path)
-		self.rect = self.image.get_rect()
-		self.rect.center = (self.x, self.y)
+		self.rect = self.image.get_rect(center = (self.x, self.y))
 
 	def move_right(self):
 		if self.rect.centerx > 1200:
@@ -57,8 +56,8 @@ class Player(pygame.sprite.Sprite):
 		self.right_images = [pygame.image.load(filename).convert_alpha() for filename in self.right_files]
 		self.pics = [[pygame.image.load("graphics/player_stand.png")],[pygame.transform.flip(img, True, False) for img in self.right_images],[pygame.transform.flip(self.right_jump_image,True,False)], [pygame.image.load(filename).convert_alpha() for filename in self.right_files],[self.right_jump_image]]
 		self.image = self.pics[0][0]
-		self.rect = self.image.get_rect()
-		self.rect.center = (self.x, self.y)
+		self.rect = self.image.get_rect(center = (self.x, self.y))
+
 
 	def move_right(self):
 		self.direction = "right"
@@ -89,34 +88,30 @@ class Player(pygame.sprite.Sprite):
 		self.y += 10
 		self.rect.centery = self.y
 		if self.rect.centery > 300:
-			source = audio.play_file("maleyell.wav")
 			self.kill()
 			print("Death")
-
-
-
-
 
 
 '''
 Groups
 '''
-scenery = pygame.sprite.Group()
-background = pygame.sprite.Group()
+background = pygame.sprite.Group() # Contains images of the blue sky and mountains
 background.add(Background("graphics/Sky.png",-400,150, 4))
 background.add(Background("graphics/Sky.png",400,150, 4))
 background.add(Background("graphics/Sky.png",1200,150, 4))
-land = pygame.sprite.Group()
+
+
+land = pygame.sprite.Group() # Contains the platform images that the player run/walks on
 land.add(Background("graphics/ground.png",325,325,8))
 land.add(Background("graphics/short_ground.png",1100,325,8))
 
+scenery = pygame.sprite.Group() # Contains both the background and platform images
 scenery.add(background)
 scenery.add(land)
 
 player = Player(200,50)
 
-
-all_sprites = pygame.sprite.Group()
+all_sprites = pygame.sprite.Group() #contains all surfaces
 all_sprites.add(scenery)
 all_sprites.add(player)
 
@@ -127,6 +122,7 @@ while True:
 		if event.type == pygame.QUIT:
 			pygame.quit()
 			exit()
+		# Actions that the player takes when the user lifts finger from keys
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_RIGHT:
 				player.stand()
@@ -134,7 +130,7 @@ while True:
 				player.stand()
 			if event.key == pygame.K_UP:
 				player.stand()
-			
+	# Actions that the player and scenery take when the user presses particular keys	
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_RIGHT]:
 		for s in scenery:
@@ -149,17 +145,14 @@ while True:
 		player.jump(land)
 
 
-	
+	# The player falls if it is not touch a platform
 	if not pygame.sprite.spritecollide(player,land,False):
 		player.gravity()
 	else:
 		player.jump_count = 0
 
-
-	
+    # Blits all surfaces to screen
 	all_sprites.draw(screen)
-
-
 
 	# Updates all of the images and objects on the screen (display surface)
 	pygame.display.update()

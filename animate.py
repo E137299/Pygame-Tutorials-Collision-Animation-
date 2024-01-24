@@ -107,9 +107,8 @@ background.add(Background("graphics/Sky.png",-400,150, 4))
 background.add(Background("graphics/Sky.png",400,150, 4))
 background.add(Background("graphics/Sky.png",1200,150, 4))
 land = pygame.sprite.Group()
-first = Background("graphics/ground.png",325,325,8)
-
-land.add(first)
+land.add(Background("graphics/ground.png",325,325,8))
+land.add(Background("graphics/short_ground.png",1100,325,8))
 
 scenery.add(background)
 scenery.add(land)
@@ -131,12 +130,8 @@ while True:
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_RIGHT:
 				player.stand()
-				for e in enemies:
-					e.adjust = 0
 			if event.key == pygame.K_LEFT:
 				player.stand()
-				for e in enemies:
-					e.adjust = 0
 			if event.key == pygame.K_UP:
 				player.stand()
 			

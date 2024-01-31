@@ -75,13 +75,13 @@ while running:
     if keys[pygame.K_DOWN]:
         sq.move(0,2)
 
-    # get_hit = pygame.sprite.spritecollide(sq,rectangles, False)
-    # if get_hit:
-    #     screen.fill("pink")
-
-    get_hit = pygame.sprite.spritecollide(sq,rectangles, True)
+    get_hit = pygame.sprite.spritecollide(sq,rectangles, False)
     if get_hit:
         screen.fill("pink")
+
+    # get_hit = pygame.sprite.spritecollide(sq,rectangles, True)
+    # if get_hit:
+    #     screen.fill("pink")
 
     rectangles.draw(screen)
     screen.blit(sq.image, sq.rect)
